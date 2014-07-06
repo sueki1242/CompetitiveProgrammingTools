@@ -52,7 +52,7 @@ try = (ARGV.length<2 ? -1 : ARGV[1].to_i)
 
 testcase = read_testcase("#{ARGV[0]}.txt")
 
-for i in 0..(testcase.length-1) do
+for i in 0..(testcase[0].length-1) do
   if (try < 0 || try == i+1)
     print "case #" + (i+1).to_s + " : "
     test(ARGV[0], testcase[0][i], testcase[1][i])
