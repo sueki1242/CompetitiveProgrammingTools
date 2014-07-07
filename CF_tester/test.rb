@@ -15,8 +15,7 @@ end
 def read_testcase(filename)
   input = ""
   output = ""
-  inputs = []
-  outputs = []
+  testcases = []
   f_input = false
   f_output = false
   IO.foreach(filename) do |line|
@@ -24,8 +23,7 @@ def read_testcase(filename)
       f_input = true
       f_output = false
       if input != ""
-        inputs.push input
-        outputs.push output
+        testcases.push [input, output]
       end
       input = ""
       output = ""
@@ -38,9 +36,8 @@ def read_testcase(filename)
       output += line
     end
   end
-  inputs.push input
-  outputs.push output
-  return [inputs, outputs]
+  testcases.push [input, output]
+  return testcases
 end
 
 if ARGV.length < 1 && ARGV.length > 2
@@ -49,13 +46,12 @@ if ARGV.length < 1 && ARGV.length > 2
 end
 
 try = (ARGV.length<2 ? -1 : ARGV[1].to_i)
-
 testcase = read_testcase("#{ARGV[0]}.txt")
 
-for i in 0..(testcase[0].length-1) do
+for i in 0..(testcase.length-1) do
   if (try < 0 || try == i+1)
     print "case #" + (i+1).to_s + " : "
-    test(ARGV[0], testcase[0][i], testcase[1][i])
+    test(ARGV[0], testcase[i][0], testcase[i][1])
   end
 end
 
