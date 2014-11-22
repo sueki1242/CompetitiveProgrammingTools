@@ -58,12 +58,12 @@ inline void prime_init(){
 	repp(i,2,PRIME_MAX)isp[i]=true;
 	repp(i,2,sqrt(PRIME_MAX)+2){
 		if(isp[i]){
-			primes.pb(i);
 			for(li j=2; i*j<PRIME_MAX; j++){
 				isp[i*j]=false;
 			}
 		}
 	}
+	rep(i,PRIME_MAX)if(isp[i])primes.pb(i);
 }
 
 inline vector<PI > decom(li x){
