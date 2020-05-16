@@ -55,9 +55,8 @@ template<typename T>
 class Segtree {
 public:
     Segtree(li n,
-            T default_value,
-            T invalid_value_,
-            std::function<T(T, T)> func_) : invalid_value(invalid_value_),
+            T unit_,
+            std::function<T(T, T)> func_) : unit(unit_),
         func(func_) {
         nn = 1;
         while (nn < n) {
@@ -65,7 +64,7 @@ public:
         }
         data.resize(nn * 2 - 1);
         for (auto && item : data) {
-            item = default_value;
+            item = unit;
         }
     }
 
@@ -79,11 +78,11 @@ public:
     }
 
     inline T query_(li a, li b, li k, li l, li r) {
-        if (r <= a || b <= l) return invalid_value;
+        if (r <= a || b <= l) return unit;
         if (a <= l && r <= b) return data[k];
         li mid = (l + r) / 2;
-        li vl = query_(a, b, k * 2 + 1, l, mid);
-        li vr = query_(a, b, k * 2 + 2, mid, r);
+        T vl = query_(a, b, k * 2 + 1, l, mid);
+        T vr = query_(a, b, k * 2 + 2, mid, r);
         return func(vl, vr);
     }
 
@@ -91,17 +90,17 @@ public:
         li l = 0;
         li r = nn;
         li k = 0;
-        if (r <= a || b <= l) return invalid_value;
+        if (r <= a || b <= l) return unit;
         if (a <= l && r <= b) return data[k];
         li mid = (l + r) / 2;
-        li vl = query_(a, b, k * 2 + 1, l, mid);
-        li vr = query_(a, b, k * 2 + 2, mid, r);
+        T vl = query_(a, b, k * 2 + 1, l, mid);
+        T vr = query_(a, b, k * 2 + 2, mid, r);
         return func(vl, vr);
     }
 
     li nn;
     vector<T> data;
-    T invalid_value;
+    T unit;
     function<T(T, T)> func;
 };
 // segtree --------------------------------//
@@ -109,7 +108,7 @@ public:
 int main() {
     li n, q;
     cin >> n >> q;
-    Segtree<li> segtree(n, bit(31) - 1, INF, [](li a, li b) {return min(a, b);});
+    Segtree<li> segtree(n, bit(31) - 1, [](li a, li b) {return min(a, b);});
     rep(i, q) {
         li type, x, y;
         cin >> type >> x >> y;
